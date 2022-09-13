@@ -17,18 +17,15 @@ import lombok.Data;
 @Table(name = "timetable")
 public class TimeTable extends BaseEntity {
 
-	@NotBlank(message = "date is required")
 	private Date date;
-	@NotBlank(message = "start time  is required")
 	@Column(name = "starttime")
 	private LocalTime startTime;
-	@NotBlank(message = "end time  is required")
 	@Column(name = "endtime")
 	private LocalTime endTime;
 //	@NotBlank(message = "faculty id is required")
 	@ManyToOne
-	@JoinColumn(name="facultyid")
-	private User facultyId;
+	@JoinColumn(name = "facultyid")
+	private User faculty;
 //	@NotBlank(message = "faculty name  is required")
 	@Column(name = "facultyname", length = 45)
 	private String facultyName;
@@ -42,4 +39,11 @@ public class TimeTable extends BaseEntity {
 	@Column(name = "modulename", length = 45)
 	private String moduleName;
 
+	public Long getFacultyId() {
+		return faculty.getId();
+	}
+
+	public String getFacultyName() {
+		return faculty.getName();
+	}
 }

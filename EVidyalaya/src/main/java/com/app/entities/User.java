@@ -4,6 +4,7 @@ import java.time.LocalDate;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.Table;
 import javax.validation.constraints.NotBlank;
@@ -25,10 +26,11 @@ public class User extends BaseEntity {
 	private LocalDate dob;
 	@NotBlank(message = "password is required")
 	private String password;
+	@NotBlank(message = "email is required")
 	private String email;
 	@Column(name = "mobno")
 	private String mobNo;
-	@Enumerated
+	@Enumerated(EnumType.STRING)
 	@NotBlank(message = "role is required")
 	private Role role;
 

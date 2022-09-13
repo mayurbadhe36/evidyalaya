@@ -1,8 +1,6 @@
 package com.app.controller;
 
 import java.io.IOException;
-import java.util.HashMap;
-import java.util.List;
 
 import javax.validation.Valid;
 
@@ -13,7 +11,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.util.StringUtils;
-import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -24,75 +21,43 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.app.dto.ApiResponse;
-import com.app.dto.CredentialDto;
 import com.app.entities.Assignment;
 import com.app.entities.NoticeBoard;
-import com.app.entities.TimeTable;
-import com.app.entities.User;
+import com.app.filehandlingutils.FacultyAssignmentUploadResponse;
 import com.app.filehandlingutils.FileDownloadUtil;
 import com.app.filehandlingutils.FileUploadResponse;
 import com.app.filehandlingutils.FileUploadUtils;
-import com.app.service.IStudentService;
+import com.app.service.IFacultyService;
 
 @RestController
-@RequestMapping("/Student")
-@CrossOrigin(origins = "http://localhost:3000/")
-public class StudentController {
+@RequestMapping("/faculty")
+public class FacultyController {
 
 	@Autowired
-	IStudentService studentService;
+	IFacultyService facultyService;
 
-//	@Autowired
-//	IFacultyService facultyRepo;
+	@PostMapping("/addNoticeboard")
+	public ResponseEntity<?> addNoticeBoard(@RequestBody @Valid NoticeBoard noticeboard, @RequestParam Long facultyId) {
+		try {
+			return new ResponseEntity<>(facultyService.addNoticeBoard(noticeboard, facultyId), HttpStatus.CREATED);
+		} catch (RuntimeException e) {
+			return new ResponseEntity<>(new ApiResponse(e.getMessage()), HttpStatus.BAD_REQUEST);
+		}
 
-	@PostMapping
-	public ResponseEntity<?> authenticateUser(@RequestBody @Valid CredentialDto cred) {
-		User u = studentService.authenticateUser(cred.getEmail(), cred.getPassword());
-		HashMap<String, Object> ht = new HashMap<String, Object>();
-		if (u == null)
-			return new ResponseEntity<>(new ApiResponse("Invalid Emp ID !!!!!!!!!!!!!!!!"), HttpStatus.NOT_FOUND);// =>
-		ht.put("status", new String("success"));
-		ht.put("data", u);
-		return ResponseEntity.ok(ht);
-	}
-
-	@GetMapping("/assignment")
-	public List<Assignment> getAllAssignment() {
-		// List<Assignment> assignments=new ArrayList<Assignment>();
-		return studentService.getAllAssignment();
-	}
-
-	@GetMapping("/noticeboard")
-	public List<NoticeBoard> getAllNoticeBoard() {
-		return studentService.getAllNoticeBoard();
-	}
-
-	@GetMapping("/timetable")
-	public List<TimeTable> getAllTimetable() {
-		return studentService.getAllTimeTable();
-	}
-
-	@GetMapping("/faculty")
-	public List<User> getAllFaculty() {
-
-		return studentService.getAllFacultyByRoleFaculty();
 	}
 
 	@PostMapping("/uploadAssignment")
-	public ResponseEntity<FileUploadResponse> uploadFile(@RequestParam Long assignId, @RequestParam Long studentId,
-			@RequestParam("file") MultipartFile multipartFile) throws IOException {
+	public ResponseEntity<FacultyAssignmentUploadResponse> uploadFile(@RequestParam("file") MultipartFile multipartFile)
+			throws IOException {
 		try {
 			String fileName = StringUtils.cleanPath(multipartFile.getOriginalFilename());
 			long size = multipartFile.getSize();
 			String filecode = FileUploadUtils.saveFile(fileName, multipartFile);
-			FileUploadResponse response = new FileUploadResponse();
+			FacultyAssignmentUploadResponse response = new FacultyAssignmentUploadResponse();
 			response.setFileName(fileName);
 			response.setSize(size);
 			response.setDownloadUri("/downloadFile/" + filecode);
-			//String filelocation = "/downloadFile/" + filecode;
-			studentService.saveAssignmentFile(assignId, studentId, filecode);
-			response.setAssignmentId(assignId);
-			response.setStudentId(studentId);
+			response.setFilecode(filecode);
 			return new ResponseEntity<>(response, HttpStatus.OK);
 		} catch (RuntimeException e) {
 			throw new RuntimeException("Something went wrong");
@@ -120,4 +85,15 @@ public class StudentController {
 		return ResponseEntity.ok().contentType(MediaType.parseMediaType(contentType))
 				.header(HttpHeaders.CONTENT_DISPOSITION, headerValue).body(resource);
 	}
+
+	@PostMapping("/addAssignment")
+	public ResponseEntity<?> addAssignment(@RequestBody @Valid Assignment assignment, @RequestParam Long facultyId) {
+		try {
+			return new ResponseEntity<>(facultyService.addAssignment(assignment, facultyId), HttpStatus.CREATED);
+		} catch (RuntimeException e) {
+			return new ResponseEntity<>(new ApiResponse(e.getMessage()), HttpStatus.BAD_REQUEST);
+		}
+
+	}
+
 }

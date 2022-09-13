@@ -6,9 +6,14 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
-import lombok.Data;
+import com.fasterxml.jackson.databind.util.ClassUtil.Ctor;
 
-@Data
+import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
+
+@Getter
+@Setter
 @Entity
 @Table(name = "assignment")
 public class Assignment extends BaseEntity {
@@ -17,12 +22,16 @@ public class Assignment extends BaseEntity {
 	private String description;
 	@ManyToOne
 	@JoinColumn(name = "facultyid")
-	private User facultyId;
+	private User faculty;
 	@Column(name = "facultyname", length = 45)
 	private String facultyName;
 	@Column(name = "filename", length = 45)
 	private String fileName;
 	@Column(name = "modulename", length = 45)
 	private String moduleName;
+
+	public Long getFacultyId() {
+		return faculty.getId();
+	}
 
 }

@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 
+import com.app.entities.Role;
 import com.app.entities.User;
 
 public interface IUserRepository extends JpaRepository<User, Long> {
@@ -12,6 +13,6 @@ public interface IUserRepository extends JpaRepository<User, Long> {
 
 	public User findByEmail(String email);
 
-	public List<User> findByRole(String role);
+	public List<User> findByRole(Role role);
 
 }
