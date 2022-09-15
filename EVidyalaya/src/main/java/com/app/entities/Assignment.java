@@ -30,7 +30,7 @@ public class Assignment extends BaseEntity {
 	@Column(name = "modulename", length = 45)
 	private String moduleName;
 
-	public Long getFacultyId() {
+	public Long getFaculty() {
 		return faculty.getId();
 	}
 

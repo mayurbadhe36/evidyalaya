@@ -2,6 +2,8 @@ package com.app.service;
 
 import java.util.List;
 
+import javax.validation.Valid;
+
 import org.springframework.stereotype.Service;
 
 import com.app.entities.Assignment;
@@ -14,17 +16,24 @@ public interface IFacultyService {
 
 	public Assignment addAssignment(Assignment assignment, Long facultyId);
 
-//
-//	public List<Assignment> getAllAssignment();
-//
-//	public List<Assignment> getAssignmentByfacultyId(Long faculityId);
+	public List<Assignment> getAllAssignment();
+
+	public List<Assignment> getAssignmentByFaculty(Long facultyId);
 
 	public NoticeBoard addNoticeBoard(NoticeBoard notice, Long facultyId);
 
-//	public List<NoticeBoard> getAllNotice();
-//
-//	public List<NoticeBoard> getNoticeByFaculty(Long faculityId);
-//
+	public List<NoticeBoard> getAllNoticeBoard();
+
+	public List<User> getAllStudentByRoleStudent();
+
+	public List<TimeTable> getAllTimeTable();
+
+	public List<NoticeBoard> getNoticeBoardByFaculty(Long facultyId);
+
+	public List<TimeTable> getAllTimeTableByFacultyId(Long id);
+
+	public TimeTable addTimeTable(@Valid TimeTable timetable, Long facultyId);
+
 //	public NoticeBoard getNoticeById(Long id);
 //
 //	public NoticeBoard updateNoticeboard(NoticeBoard notice);
@@ -50,11 +59,7 @@ public interface IFacultyService {
 //	public TimeTable addTimeTable(TimeTable timeTable);
 //
 //	public TimeTable getTimeTableById(long id);
-//
-//	public List<TimeTable> getAllTimeTableByFacultyId(long id);
-//
-//	public List<TimeTable> getAllTimeTable();
-//
+
 //	public boolean deleteTimeTable(long id);
 //
 //	public TimeTable updateTimeTable(TimeTable timeTable);

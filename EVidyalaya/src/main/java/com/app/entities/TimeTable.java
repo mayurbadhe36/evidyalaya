@@ -10,9 +10,16 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.validation.constraints.NotBlank;
 
-import lombok.Data;
+import org.springframework.format.annotation.DateTimeFormat;
 
-@Data
+import lombok.Data;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
+@Getter
+@Setter
+@NoArgsConstructor
 @Entity
 @Table(name = "timetable")
 public class TimeTable extends BaseEntity {
@@ -21,6 +28,7 @@ public class TimeTable extends BaseEntity {
 	@Column(name = "starttime")
 	private LocalTime startTime;
 	@Column(name = "endtime")
+	@DateTimeFormat(pattern = "")
 	private LocalTime endTime;
 //	@NotBlank(message = "faculty id is required")
 	@ManyToOne
@@ -39,11 +47,12 @@ public class TimeTable extends BaseEntity {
 	@Column(name = "modulename", length = 45)
 	private String moduleName;
 
-	public Long getFacultyId() {
+	public Long getFaculty() {
 		return faculty.getId();
 	}
 
-	public String getFacultyName() {
-		return faculty.getName();
-	}
+//	public String getFacultyName() {
+//		return faculty.getName();
+//	}
+	
 }

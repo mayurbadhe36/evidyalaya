@@ -121,7 +121,7 @@ public class StudentServiceImpl implements IStudentService {
 		Assignment assignment = assignmentRepo.findById(assignId)
 				.orElseThrow(() -> new ResourceNotFoundException("Invalid Assignment ID : Can't save file!!!!!!!"));
 
-		User faculty = userRepo.findById(assignment.getFaculty().getId())
+		User faculty = userRepo.findById(assignment.getFaculty())
 				.orElseThrow(() -> new ResourceNotFoundException("Invalid Faculty ID : Can't save file!!!!!!!"));
 
 		AssignmentAnswer aa = new AssignmentAnswer();

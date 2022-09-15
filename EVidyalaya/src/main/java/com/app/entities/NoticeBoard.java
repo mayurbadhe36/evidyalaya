@@ -13,6 +13,7 @@ import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
 
+@Data
 @Getter
 @Setter
 @Entity
@@ -29,17 +30,17 @@ public class NoticeBoard extends BaseEntity {
 	private String facultyName;
 	@Column(name = "modulename")
 	private String moduleName;
-
-	public Long getFacultyId() {
+	
+	public Long getFaculty() {
 		return faculty.getId();
 	}
 
-	public String getFacultyName() {
-		return faculty.getName();
-	}
-
-	public void setFacultyName(String facultyname) {
-		this.facultyName = facultyname;
-	}
+//	public String getFacultyName() {
+//		return faculty.getName();
+//	}
+//
+//	public void setFacultyName(String facultyname) {
+//		this.facultyName = facultyname;
+//	}
 
 }

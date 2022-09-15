@@ -5,9 +5,10 @@ import java.util.List;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import com.app.entities.Assignment;
+import com.app.entities.User;
 
 public interface IAssignmentRepository extends JpaRepository<Assignment, Long> {
 
-	public List<Assignment> findAssignmentsByFaculty(long id);
+	public List<Assignment> findByFaculty(User u);
 
 }

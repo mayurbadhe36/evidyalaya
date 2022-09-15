@@ -1,14 +1,21 @@
 package com.app.service;
 
+import java.util.List;
+
+import javax.validation.Valid;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.app.custom_exceptions.ResourceNotFoundException;
 import com.app.entities.Assignment;
 import com.app.entities.NoticeBoard;
+import com.app.entities.Role;
+import com.app.entities.TimeTable;
 import com.app.entities.User;
 import com.app.repository.IAssignmentRepository;
 import com.app.repository.INoticeboardRepository;
+import com.app.repository.ITimetableRepository;
 import com.app.repository.IUserRepository;
 
 @Service
@@ -25,31 +32,31 @@ public class FacultyServiceImpl implements IFacultyService {
 
 //	@Autowired
 //	private IAssignmentAnswerRepository answerRepo;
-//
-//	@Autowired
-//	private TimetableRepository timetableRepo;
+
+	@Autowired
+	private ITimetableRepository timetableRepo;
 
 	@Override
 	public Assignment addAssignment(Assignment assignment, Long facultyId) {
-
 		User u = userRepo.findById(facultyId)
 				.orElseThrow(() -> new ResourceNotFoundException("Invalid Faculty ID !!!!!!!"));
 		assignment.setFaculty(u);
 		return assignRepo.save(assignment);
 	}
 
-//
-//	@Override
-//	public List<Assignment> getAllAssignment() {
-//		return assignRepo.findAll();
-//
-//	}
-//
-//	@Override
-//	public List<Assignment> getAssignmentByfacultyId(Long faculityId) {
-//		return assignRepo.findAssignmentsByFaculty(faculityId);
-//	}
-//
+	@Override
+	public List<Assignment> getAllAssignment() {
+		return assignRepo.findAll();
+
+	}
+
+	@Override
+	public List<Assignment> getAssignmentByFaculty(Long facultyId) {
+		User u = userRepo.findById(facultyId)
+				.orElseThrow(() -> new ResourceNotFoundException("Invalid Faculty ID !!!!!!!"));
+		return assignRepo.findByFaculty(u);
+	}
+
 	@Override
 	public NoticeBoard addNoticeBoard(NoticeBoard notice, Long facultyId) {
 		User u = userRepo.findById(facultyId)
@@ -57,11 +64,24 @@ public class FacultyServiceImpl implements IFacultyService {
 		notice.setFaculty(u);
 		return noticeRepo.save(notice);
 	}
-//
-//	@Override
-//	public List<NoticeBoard> getAllNotice() {
-//		return noticeRepo.findAll();
-//	}
+
+	@Override
+	public List<NoticeBoard> getAllNoticeBoard() {
+
+		return noticeRepo.findAll();
+	}
+
+	@Override
+	public List<TimeTable> getAllTimeTableByFacultyId(Long facultyId) {
+		User u = userRepo.findById(facultyId)
+				.orElseThrow(() -> new ResourceNotFoundException("Invalid Faculty ID !!!!!!!"));
+		return timetableRepo.findByFaculty(u);
+	}
+
+	@Override
+	public List<TimeTable> getAllTimeTable() {
+		return timetableRepo.findAll();
+	}
 //
 //	@Override
 //	public List<NoticeBoard> getNoticeByFaculty(Long facultyId) {
@@ -154,26 +174,12 @@ public class FacultyServiceImpl implements IFacultyService {
 //
 //		return null;
 //	}
-//
-//	@Override
-//	public TimeTable addTimeTable(TimeTable timeTable) {
-//		return timetableRepo.save(timeTable);
-//	}
-//
+
 //	@Override
 //	public TimeTable getTimeTableById(long id) {
 //		return timetableRepo.findById(id).get();
 //	}
-//
-//	@Override
-//	public List<TimeTable> getAllTimeTableByFacultyId(long id) {
-//		return timetableRepo.findByFacultyOrderByIdDesc(id);
-//	}
-//
-//	@Override
-//	public List<TimeTable> getAllTimeTable() {
-//		return timetableRepo.findAll();
-//	}
+
 //
 //	@Override
 //	public boolean deleteTimeTable(long id) {
@@ -189,5 +195,25 @@ public class FacultyServiceImpl implements IFacultyService {
 //	public TimeTable updateTimeTable(TimeTable timeTable) {
 //		return timetableRepo.save(timeTable);
 //	}
+
+	@Override
+	public List<User> getAllStudentByRoleStudent() {
+		return userRepo.findByRole(Role.ROLE_STUDENT);
+	}
+
+	@Override
+	public List<NoticeBoard> getNoticeBoardByFaculty(Long facultyId) {
+		User u = userRepo.findById(facultyId)
+				.orElseThrow(() -> new ResourceNotFoundException("Invalid Faculty ID !!!!!!!"));
+		return noticeRepo.findByFaculty(u);
+	}
+
+	@Override
+	public TimeTable addTimeTable(@Valid TimeTable timetable, Long facultyId) {
+		User u = userRepo.findById(facultyId)
+				.orElseThrow(() -> new ResourceNotFoundException("Invalid Faculty ID !!!!!!!"));
+		timetable.setFaculty(u);
+		return timetableRepo.save(timetable);
+	}
 
 }

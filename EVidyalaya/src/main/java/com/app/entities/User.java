@@ -9,9 +9,13 @@ import javax.persistence.Enumerated;
 import javax.persistence.Table;
 import javax.validation.constraints.NotBlank;
 
-import lombok.Data;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
-@Data
+@Getter
+@Setter
+@NoArgsConstructor
 @Entity
 @Table(name = "userdetail")
 public class User extends BaseEntity {
@@ -22,7 +26,7 @@ public class User extends BaseEntity {
 	@Column(length = 45)
 	@NotBlank(message = "address is required")
 	private String address;
-	@NotBlank(message = "dob is required")
+//	@JsonFormat(pattern = "DD-MM-YYYY")
 	private LocalDate dob;
 	@NotBlank(message = "password is required")
 	private String password;
@@ -31,7 +35,19 @@ public class User extends BaseEntity {
 	@Column(name = "mobno")
 	private String mobNo;
 	@Enumerated(EnumType.STRING)
-	@NotBlank(message = "role is required")
 	private Role role;
+
+//	public User(@NotBlank(message = "name is required") String name,
+//			@NotBlank(message = "address is required") String address, LocalDate dob,
+//			@NotBlank(message = "password is required") String password,
+//			@NotBlank(message = "email is required") String email, String mobNo) {
+//		super();
+//		this.name = name;
+//		this.address = address;
+//		this.dob = dob;
+//		this.password = password;
+//		this.email = email;
+//		this.mobNo = mobNo;
+//	}
 
 }

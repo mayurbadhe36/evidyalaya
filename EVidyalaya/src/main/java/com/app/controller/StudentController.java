@@ -35,26 +35,23 @@ import com.app.filehandlingutils.FileUploadUtils;
 import com.app.service.IStudentService;
 
 @RestController
-@RequestMapping("/Student")
-@CrossOrigin(origins = "http://localhost:3000/")
+@RequestMapping("/student")
+@CrossOrigin(origins = "http://localhost:3000")
 public class StudentController {
 
 	@Autowired
 	IStudentService studentService;
-
-//	@Autowired
-//	IFacultyService facultyRepo;
-
-	@PostMapping
-	public ResponseEntity<?> authenticateUser(@RequestBody @Valid CredentialDto cred) {
-		User u = studentService.authenticateUser(cred.getEmail(), cred.getPassword());
-		HashMap<String, Object> ht = new HashMap<String, Object>();
-		if (u == null)
-			return new ResponseEntity<>(new ApiResponse("Invalid Emp ID !!!!!!!!!!!!!!!!"), HttpStatus.NOT_FOUND);// =>
-		ht.put("status", new String("success"));
-		ht.put("data", u);
-		return ResponseEntity.ok(ht);
-	}
+//
+//	@PostMapping
+//	public ResponseEntity<?> authenticateUser(@RequestBody @Valid CredentialDto cred) {
+//		User u = studentService.authenticateUser(cred.getEmail(), cred.getPassword());
+//		HashMap<String, Object> ht = new HashMap<String, Object>();
+//		if (u == null)
+//			return new ResponseEntity<>(new ApiResponse("Invalid Emp ID !!!!!!!!!!!!!!!!"), HttpStatus.NOT_FOUND);// =>
+//		ht.put("status", new String("success"));
+//		ht.put("data", u);
+//		return ResponseEntity.ok(ht);
+//	}
 
 	@GetMapping("/assignment")
 	public List<Assignment> getAllAssignment() {
@@ -89,7 +86,7 @@ public class StudentController {
 			response.setFileName(fileName);
 			response.setSize(size);
 			response.setDownloadUri("/downloadFile/" + filecode);
-			//String filelocation = "/downloadFile/" + filecode;
+			// String filelocation = "/downloadFile/" + filecode;
 			studentService.saveAssignmentFile(assignId, studentId, filecode);
 			response.setAssignmentId(assignId);
 			response.setStudentId(studentId);
